@@ -1,0 +1,57 @@
+---
+- name: Install and Configure Web Server
+  hosts: serverb.lab.example.com
+  become: true
+
+  tasks:
+    - name: Install Dependencies
+      ansible.builtin.dnf:
+        name:
+          - httpd
+          - firewalld
+          - mariadb-server
+          - php
+          - php-mysqlnd
+        state: latest
+
+    - name: Start and Enable Firewalld
+      ansible.builtin.service:
+        name: firewalld
+        state: started
+        enabled: true
+
+    - name: Enabled Http Connection
+      ansible.posix.firewalld:
+        service: http
+        state: enabled
+        immediate: true
+        permanent: true
+
+    - name: Enable and Run Httpd
+      ansible.builtin.service:
+        name: httpd
+        state: started
+        enabled: true
+
+    - name: Enable and Run MariaDB
+      ansible.builtin.service:
+        name: mariadb
+        state: started
+        enabled: true
+
+    - name: Copy HTML to Httpd
+      ansible.builtin.copy:
+        src: /home/student/playbook-review/index.php
+        dest: /var/www/html/index.php
+        mode: "0644"
+
+
+- name: Test Running Server
+  hosts: workstation.lab.example.com
+  become: false
+
+  tasks:
+    - name: Test Server
+      ansible.builtin.uri:
+        url: http://serverb.lab.example.com
+        status_code: 200

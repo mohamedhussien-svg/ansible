@@ -1,0 +1,46 @@
+---
+- name: Configure and Run Web Server
+  hosts: servera.lab.example.com
+  become: true
+  tasks:
+    - name: Install Web Server and Http
+      ansible.builtin.dnf:
+        name:
+          - httpd
+          - firewalld
+        state: latest
+
+    - name: Make Html Page in the Http
+      ansible.builtin.copy:
+        content: "Hello Mohamed"
+        dest: /var/www/html/index.html
+
+    - name: Enable and Run Firewalld Service
+      ansible.builtin.service:
+        name: firewalld
+        state: started
+        enabled: true
+
+    - name: Allow Http Connection
+      ansible.posix.firewalld:
+        service: http
+        state: enabled
+        permanent: true
+        immediate: true
+
+    - name: Enable and Run Http Service
+      ansible.builtin.service:
+        name: httpd
+        state: started
+        enabled: true
+
+- name: Test Intranet Server
+  hosts: workstation.lab.example.com
+  become: false
+  tasks:
+     - name: Test Connection to Web Server
+       ansible.builtin.uri:
+         url: http://servera.lab.example.com
+         status_code: 200
+         return_content: true
+

@@ -1,0 +1,8 @@
+Ansible plays are idempotent, which means they avoid making any changes if they detect that the current state matches the desired final state.
+
+what is privilege escalation : - can be in the ansible configuration or in the playbook
+    You can set a remote_user directive in your project's ansible.cfg file to configure Ansible to use a different user account on the managed hosts when it initially logs in.
+    If you still need the tasks to run as root, then you can use privilege escalation to switch to that user after the initial remote connection.
+    the User used to connect to the managed host has some permission and to allow playbook or task to execute using higher permission you can use become at level playbook or level task
+
+ansible-navigator run  -m stdout intranet.yml --syntax-check
