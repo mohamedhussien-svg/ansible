@@ -1,0 +1,18 @@
+*] Ignoring Task Failure
+   By default, if a task fails, the play is aborted. However, this behavior can be overridden by ignoring failed tasks.
+   You can use the ignore_errors keyword in a task to accomplish this.
+*] Force Handlers
+   Forcing Execution of Handlers After Task Failure
+   Normally when a task fails and the play aborts on that host, any handlers that had been notified by earlier tasks in the play do not run.
+   If you set the force_handlers: true keyword on the play, then notified handlers are called even if the play aborted because a later task failed.
+
+*] Remember that Handler is notified what the status of the task reported as changed and not notified if the status is ok or Failed
+
+*] Specify Task Failure Conditions
+       1] failed_when:  [true | false | any snippet return boolean]
+       2] ansible.builtin.dnf
+            msg: any custom message
+
+*] Specify when task is changes
+        1] change_when: [true | false | any snippet return boolean]
+    it used to validate something in the host without making any changes, or you need only task reported as changed if a command execute successfully

@@ -1,0 +1,45 @@
+- name: Error Handler Play
+  hosts: all
+  become: true
+  force_handlers: true
+
+  vars:
+    web_pkg: noPKG
+  tasks:
+
+    - name: Update WebServer
+      ansible.builtin.command: /bin/true
+      notify: Restart The DB
+
+    - name: Update WebServer2
+      ansible.builtin.command: /bin/true
+      register: result
+      failed_when: "'ok' not in result.stdout"
+
+    - name: Update WebServer3
+      ansible.builtin.command: /bin/true
+      register: result_3
+      ignore_errors: true
+      changed_when: "'success' in result_3.stdout"
+      notify:
+        - Restart The DB
+
+    - name: Failed Task
+      when: "'ok' not in result_3.stdout"
+      ansible.builtin.fail:
+        msg: Failed from task, UpdateWebServer3
+
+    - name: Installed {{ web_pkg }}
+      ansible.builtin.dnf:
+        name: "{{ web_pkg }}"
+        state: present
+      ignore_errors: true
+
+
+
+
+  handlers:
+    - name: Restart The DB
+      ansible.builtin.service:
+        name: mariadb
+        state: restarted
