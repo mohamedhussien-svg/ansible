@@ -1,0 +1,39 @@
+
+Ansible facts are variables that are automatically discovered by Ansible on a managed host. Facts contain host-specific information that can be used just like regular variables in plays, conditionals, loops, or any other statement that depends on a value collected from a managed host.
+
+Some facts gathered for a managed host might include:
+
+The host name
+
+The kernel version
+
+Network interface names
+
+Network interface IP addresses
+
+Operating system version
+
+Number of CPUs
+
+Available or free memory
+
+Size and free space of storage devices
+
+---------------------------------------------------------------------------------------
+Your play might restart a server by using a conditional task based on the value of a fact that was gathered, such as the status of a particular service.
+
+The play might customize a MySQL configuration file depending on the available memory that is reported by a fact.
+
+The IPv4 address used in a configuration file might be set based on the value of a fact.
+
+-------------
+
+---
+- name: This play does not automatically gather any facts
+  hosts: large_datacenter
+  gather_facts: false
+Even if gather_facts: false is set for a play, you can manually gather facts at any time by running a task that uses the ansible.builtin.setup module:
+
+  tasks:
+    - name: Manually gather facts
+      ansible.builtin.setup:
