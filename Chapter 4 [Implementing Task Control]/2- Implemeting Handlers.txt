@@ -1,0 +1,14 @@
+Handler :- is a task that runs only when another task change the managed Host
+
+*] Ansible modules are designed to be idempotent. This means that if you run a playbook multiple times, the result is always the same.
+
+*] Modules Runs to make Desired State equal to Actual State
+
+*] However, sometimes when a task does make a change to the system, a further task might need to be run.
+   For example, a change to a service's configuration file might then require that the service be reloaded so that the changed configuration takes effect.
+
+   Handlers are tasks that respond to a notification triggered by other tasks.
+   Tasks only notify their handlers when the task changes something on a managed host.
+   Each handler is triggered by its name after the play's block of tasks.
+
+

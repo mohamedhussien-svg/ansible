@@ -1,0 +1,24 @@
+- name: Handle Task Fails
+  hosts: webserver
+  become: true
+  force_handlers: true
+  tasks:
+
+    - name: Install nopkg
+      ignore_errors: true
+      notify:
+        - Print Message
+      ansible.builtin.dnf:
+        name: nopkg
+        state: present
+      register: result
+
+    - name: Check dnf Status
+      when: "'Success' not in result.stdout"
+      fail:
+        msg: "{{ result.stdout }}"
+
+  handlers:
+    - name: Print Message
+      ansible.builtin.debug:
+        msg: An Error Happened
