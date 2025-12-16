@@ -1,0 +1,18 @@
+Referencing Inventory Hosts
+
+*] Host Patterns :- used to specify the hosts which your play runs
+   the name of the managed hosts or inventory group specifies using host patterns
+
+   can be:-
+
+   1] The name of single host listed in the inventory file
+   2] You can use the ip address that listed in the inventory file
+   3] Specify Host Using group Name
+   4] you can target the ungrouped Hosts
+   5] *.example.com => matches all hosts ended with .example.com
+   6] datacenter*   => matches all hosts started with datacenter
+   7] List of hosts like lab,datacenter1 . comma separated
+   8] use ! to exclude any host or group
+   9] 'lab&datacenter1' = > list all hosts that belong to the 2 groups
+
+

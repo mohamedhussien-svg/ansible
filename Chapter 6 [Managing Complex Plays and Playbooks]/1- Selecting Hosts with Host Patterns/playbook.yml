@@ -1,0 +1,27 @@
+- name: Print hosts
+#  hosts: all
+#  hosts:
+#    - 192.168.2.1
+#    - test1.example.com
+#  hosts: '*.example.com'
+#  hosts: lab
+#  hosts: ungrouped
+#  hosts: '*'
+#  hosts: '192.*'
+#  hosts:
+#    - lab
+#    - datacenter1
+#    - '192.*'
+#    - '!192.168.2.1'
+#  hosts:
+#    - lab
+#    - '!*.lab.example.com'
+#  hosts: 'lab,&datacenter1'
+  hosts: mohamed
+
+  become: true
+  gather_facts: false
+  tasks:
+    - name: Print Hosts Task
+      debug:
+        msg: the host is {{ inventory_hostname }}
