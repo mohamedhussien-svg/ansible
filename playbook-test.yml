@@ -1,0 +1,12 @@
+- name: Debug Playbook
+  hosts: servers
+  become: true
+  tasks:
+    - name: Print Message
+      debug:
+        msg: Hello Mohamed Ahmed Hussein Hassan {{ansible_facts['distribution']}}
+      changed_when: ansible_facts['distribution'] == 'MacOSX'
+      register: result
+    - name: print Result
+      debug:
+        var: result

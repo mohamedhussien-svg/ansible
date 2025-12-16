@@ -16,3 +16,12 @@
 *] Specify when task is changes
         1] change_when: [true | false | any snippet return boolean]
     it used to validate something in the host without making any changes, or you need only task reported as changed if a command execute successfully
+
+*] Ansible Blocks and Error Handling
+    Blocks is group of tasks, and you can run this block conditionally  like you need this block to run if OS is redhat
+    if a task failed you can recover or handle this Fails in recuse block and there is always block that run after the block completion
+    either it successes or failed
+
+    block: Defines the main tasks to run.
+    rescue: Defines the tasks to run if the tasks defined in the block clause fail.
+    always: Defines the tasks that always run independently of the success or failure of tasks defined in the block and rescue clauses.

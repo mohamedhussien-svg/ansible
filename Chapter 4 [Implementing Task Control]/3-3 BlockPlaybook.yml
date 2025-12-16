@@ -1,0 +1,19 @@
+- name: block example
+  hosts: localhost
+  become: true
+  tasks:
+    - name: Database Upgrade Block
+      when: ansible_facts['federation'] == 'redhat'
+      block:
+        - name: Upgrade DB
+          ansible.builtin.shell:
+            cmd: etc/pgswl/upgrade.db
+      rescue:
+        - name: Revert DB
+          ansible.builtin.shell:
+            cmd: etc/pgswl/revert.db
+      always:
+        - name: Restart DB
+          ansible.builtin.service:
+            name: mariadb
+            state: restarted
