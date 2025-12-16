@@ -1,0 +1,59 @@
+- name: ManageFiles
+  hosts: localhost
+  become: true
+  vars:
+    base_dir: /home/devops/files
+    users_file: "{{base_dir}}/users.txt"
+
+  tasks:
+    - name: Fetch Files from Host
+      ansible.builtin.fetch:
+        src: /var/log/secure
+        dest: secure-backup
+        flat: false
+
+    - name: Ensure that /home/devops/files Exists
+      ansible.builtin.file:
+        path:  /home/devops/files
+        state: directory
+        owner: devops
+        group: devops
+        mode: u+rw,g-wx,o-rwx
+        setype: _default
+
+    - name: Append Line in /home/devops/files/users.txt
+      ansible.builtin.lineinfile:
+        path: "{{ users_file }}"
+        line: This line was added by the lineinfile module
+        state: present
+        create: true
+        owner: devops
+        group: devops
+        mode: u=rw,g=rw,o=r
+
+    - name: Copy a file to managed hosts and set ownership and permissions
+      ansible.builtin.copy:
+        src: system
+        dest: /home/devops/files/
+        owner: devops
+        group: devops
+        mode: 0664
+
+    - name: Add Block in File users.txt
+      blockinfile:
+        path: "{{ users_file }}"
+        block: |
+          This block of text consists of two lines.
+          They have been added by the blockinfile module.
+        state: present
+
+
+- name: Delete Files
+  hosts: all
+  become: true
+  tasks:
+    - name: Delete Files
+      file:
+        path: "{{ base_dir }}"
+        state: absent
+

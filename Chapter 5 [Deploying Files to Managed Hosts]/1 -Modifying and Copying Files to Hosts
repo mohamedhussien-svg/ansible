@@ -1,0 +1,8 @@
+Table 5.1. Commonly Used File Modules in ansible.builtin
+
+blockinfile:-	Insert, update, or remove a block of multiline text surrounded by customizable marker lines.
+copy:-	Copy a file from the local or remote machine to a location on a managed host. Similar to the file module, the copy module can also set file attributes, including SELinux context.
+fetch:-	This module works like the copy module, but in reverse. This module is used for fetching files from remote machines to the control node and storing them in a file tree, organized by host name.
+file:-	Set attributes such as permissions, ownership, SELinux contexts, and time stamps of regular files, symlinks, hard links, and directories. This module can also create or remove regular files, symlinks, hard links, and directories. A number of other file-related modules support the same options to set attributes as the file module, including the copy module.
+lineinfile:-	Ensure that a particular line is in a file, or replace an existing line using a back-reference regular expression. This module is primarily useful when you want to change a single line in a file.
+stat:-	Retrieve status information for a file, similar to the Linux stat command.
