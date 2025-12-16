@@ -1,0 +1,44 @@
+{# /etc/hosts line  #}
+{{ ansible_facts['default_ipv4']['address'] }}  {{ ansible_facts['hostname'] }}
+
+# For Loop
+{% for user in users %}
+    {{user}}
+{% endfor %}
+==-----------------------------------------
+{# for statement #}
+{% for myuser in users if not myuser == "root" %}
+    User number {{ loop.index }} - {{ myuser }}
+{% endfor %}
+
+{% if finished %}
+    {{ result }}
+{% endif %}
+
+{% for host in groups['all'] %}
+    {{ hostvars[host]['ansible_facts']['default_ipv4']['address'] }} {{ hostvars[host]['ansible_facts']['fqdn'] }} {{ hostvars[host]['ansible_facts']['hostname'] }}
+{% endfor %}
+
+
+
+Variable Filters
+
+{{ output | to_json }}
+{{ output | to_yaml }}
+
+{{ output | to_nice_json }}
+{{ output | to_nice_yaml }}
+
+{{ output | from_json }}
+{{ output | from_yaml }}
+
+
+Example
+
+This is the system {{ ansible_facts['fqdn'] }}.
+This is a {{ ansible_facts['distribution'] }} version {{ ansible_facts['distribution_version'] }} system.
+{% if ansible_facts['fqdn'] in groups['workstations'] %}
+As a workstation user, you need to submit a ticket to receive help with any issues.
+{% elif ansible_facts['fqdn'] in groups['webservers'] %}
+Please report issues to: {{ system_owner }}.
+{% endif %}

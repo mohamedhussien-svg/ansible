@@ -13,13 +13,14 @@
         flat: false
 
     - name: Ensure that /home/devops/files Exists
-      ansible.builtin.file:
+      file:
         path:  /home/devops/files
         state: directory
         owner: devops
         group: devops
         mode: u+rw,g-wx,o-rwx
         setype: _default
+
 
     - name: Append Line in /home/devops/files/users.txt
       ansible.builtin.lineinfile:
@@ -46,6 +47,12 @@
           This block of text consists of two lines.
           They have been added by the blockinfile module.
         state: present
+    - name: Check File Stat
+      stat:
+        path: "{{ users_file }}"
+        checksum_algorithm: md5
+      register: result
+
 
 
 - name: Delete Files

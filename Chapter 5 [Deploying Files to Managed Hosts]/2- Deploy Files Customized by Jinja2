@@ -1,0 +1,8 @@
+Introduction to Jinja2
+
+*] Ansible uses the Jinja2 templating system for template files.
+   Ansible also uses Jinja2 syntax to reference variables in playbooks, so you already know a little about how to use it.
+
+
+*] The expression {{ EXPR }} is replaced with the results of that expression or variable.
+   Jinja2 templates can also use {% EXPR %} for special control structures or logic that loops over Jinja2 code or perform tests
