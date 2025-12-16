@@ -1,0 +1,14 @@
+Including and Importing Files
+
+*] Manage large playbooks by importing or including other playbooks or tasks from external files,
+   either unconditionally or based on a conditional test.
+
+ *] you can include files or import files
+    When you include content, it is a dynamic operation. Ansible processes included content during the run of the playbook, as content is reached.
+    When you import content, it is a static operation. Ansible preprocesses imported content when the playbook is initially parsed, before the run starts.
+
+    import_playbook:- should be at the top of playbook
+    import_tasks:- to add task files
+
+
+

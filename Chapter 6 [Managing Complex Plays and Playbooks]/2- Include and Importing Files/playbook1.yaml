@@ -1,0 +1,8 @@
+- name: Setup and Configure Web Server
+  hosts: localhost
+  tasks:
+    - name: webserver tasks
+      import_tasks: tasks/webserver_tasks.yaml
+      vars:
+        - package: httpd
+        - service: httpd

@@ -1,0 +1,16 @@
+- name: Install PKG {{ fw_package  }}
+  dnf:
+    name: "{{ fw_package }}"
+    state: latest
+- name: Start and Enable {{ fw_service }}
+  service:
+    name: "{{ fw_service }}"
+    state: started
+    enabled: true
+- name: Allow rules {{ rules }}
+  loop: "{{ rules }}"
+  ansible.posix.firewalld:
+    service: "{{ item }}"
+    immediate: true
+    state: enabled
+    permanent: true

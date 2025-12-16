@@ -1,0 +1,7 @@
+- name: Test Web Server
+  hosts: "{{my_host}}"
+  tasks:
+    - name: Test URI
+      uri:
+        url: "{{ url }}"
+        status_code: 200
