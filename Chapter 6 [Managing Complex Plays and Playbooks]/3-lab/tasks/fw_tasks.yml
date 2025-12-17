@@ -1,0 +1,14 @@
+- name: Install FW
+  import_tasks: install_enable_pkg.yml
+  vars:
+    package: httpd
+    service: httpd
+
+
+- name: Allow {{ rules }}
+  loop: "{{ rules }}"
+  ansible.posix.firewalld:
+    service: "{{ item }}"
+    immediate: true
+    permanent: true
+    state: enabled

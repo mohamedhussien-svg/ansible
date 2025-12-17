@@ -1,0 +1,18 @@
+- name: Configure Web Server
+  hosts: server*.lab.example.com
+  become: true
+  tasks:
+    - name: Configure Web Server
+      import_tasks: web_tasks.yml
+
+    - name: Configure Firewall
+      import_tasks: fw_tasks.yml
+      vars:
+        rules:
+          - https
+          - http
+  handlers:
+    - name: Restart Httpd
+      service:
+        name: httpd
+        state: restarted

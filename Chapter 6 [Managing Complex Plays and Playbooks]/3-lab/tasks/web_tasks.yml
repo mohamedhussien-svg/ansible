@@ -1,0 +1,21 @@
+- name: Install and Enable Httpd
+  import_tasks: install_enable_pkg.yml
+  vars:
+    package: httpd
+    service: httpd
+
+- name: Copy web config files
+  copy:
+    src: files/tune.conf
+    dest: /etc/httpd/conf.d/tune.conf
+    owner: root
+    group: root
+    mode: 0644
+  notify:
+    - Restart Httpd
+
+- name: Copy Content
+  copy:
+    content: |
+      this is {{ ansible_facts['fqdn'] }}
+    dest: /var/www/html/index.html
