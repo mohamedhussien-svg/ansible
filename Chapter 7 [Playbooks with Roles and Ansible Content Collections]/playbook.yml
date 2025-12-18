@@ -1,0 +1,17 @@
+- name: Used Roles
+  hosts: all
+  become: true
+
+  roles:
+    - role: name
+
+  tasks:
+    - name: Print Message
+      debug:
+        msg: Hello
+    - name: Add Role
+      import_role:
+        name: xyz
+      vars:
+        var1: x
+        var2: y

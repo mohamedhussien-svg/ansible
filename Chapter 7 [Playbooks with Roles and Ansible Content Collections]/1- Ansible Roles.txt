@@ -1,0 +1,44 @@
+*] As you develop more playbooks, you are likely to discover that you have many opportunities to reuse code from playbooks that you wrote previously.
+    Perhaps, you could repurpose a play to configure a MySQL database for one application to configure a MySQL database for another application,
+    with different hostnames, passwords, and users.
+
+    Ansible's roles make it easier to reuse Ansible code generically. You can package all the tasks, variables, files, templates,
+    and other resources needed to provision infrastructure or deploy applications in a standardized directory structure.
+
+    A well-written role can take variables passed from the playbook. These variables can adjust the behavior of the role,
+    setting all the site-specific hostnames, IP addresses, usernames, secrets, or other locally-specific details.
+
+You can find roles by using distribution packages, such as
+
+    Ansible Content Collections. Or,
+    Red Hat automation hub,
+    Private automation hub,
+    Ansible Galaxy website.
+
+*] Examining the Ansible Role Structure
+
+    defaults	The main.yml file in this directory contains the default values of role variables that can be overwritten when the role is used. These variables have low precedence and are intended to be changed and customized in plays.
+    files	This directory contains static files that are referenced by role tasks.
+    handlers	The main.yml file in this directory contains the role's handler definitions.
+    meta	The main.yml file in this directory contains information about the role, including author, license, platforms, and optional role dependencies.
+    tasks	The main.yml file in this directory contains the role's task definitions.
+    templates	This directory contains Jinja2 templates that are referenced by role tasks.
+    tests	This directory can contain an inventory and test.yml playbook that can be used to test the role.
+    vars	The main.yml file in this directory defines the role's variable values. Often these variables are used for internal purposes within the role. These variables have high precedence and are not intended to be changed when used in a playbook.
+
+*] Using Ansible Roles in a Play
+   There are several ways to call roles in a play. The two primary methods are:
+
+    You can include or import them like a task in your tasks list.
+    You can create a roles list that runs specific roles before your play's tasks.
+
+When you use a roles section to import roles into a play, the roles run first, before any tasks that you define for that play. Whether the roles section is listed before or after the tasks section in the play does not matter.
+
+*] Special Tasks Sections
+    There are two special task sections, pre_tasks and post_tasks, that are occasionally used with roles sections.
+    The pre_tasks section is a list of tasks, similar to tasks, but these tasks run before any of the roles in the roles section.
+    If any task in the pre-tasks section notify a handler, then those handler tasks run before the roles or normal tasks.
+
+    Plays also support a post_tasks keyword. These tasks run after the play's tasks and any handlers notified by the play's tasks.
+
+    The following play shows an example with pre_tasks, roles, tasks, post_tasks and handlers. It is unusual that a play would contain all of these section
