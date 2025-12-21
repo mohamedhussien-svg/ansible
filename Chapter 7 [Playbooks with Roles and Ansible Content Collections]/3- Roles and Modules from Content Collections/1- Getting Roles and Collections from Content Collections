@@ -1,0 +1,57 @@
+*] Ansible Content Collections :- is a set of related roles, modules and plugins that may be used in the playbook .
+
+    Examples:
+
+        redhat.insight :- contains roles, modules and plugin that used to register system with redhat insights for RHEL
+        cisco.ios:- contains roles, modules and plugin used to manage Cisco IOS network appliances.
+
+    You can install a selected version of collection , so you have all the roles , modules and plugin that can be uses in the playbook
+
+    Namespace can be used to specify the collection by name , it is the first part of the collection name like:-
+        community.crpt
+        community.postgresql
+        redhat.rvt
+        redhat.satellite
+        redhat.insights
+
+*] Selecting Source of ansible content collections
+
+    Automation Hub :- contains ansible content collections that certified from redhat.
+                      you should have subscription to ansible automation platform to access this.
+    Private Automation Hub :-
+    Ansible Galaxy :- community support
+    Third party [Git Repositories or Archive File]
+
+*] Before you use any module from the Collections you need to install it first
+    ansible-galaxy collection install community.mysql -p collections
+    You can also install collections from requirements.yml file
+
+    ---
+    collections: 1
+      - name: community.crypto 2
+
+      - name: ansible.posix
+        version: 1.2.0 3
+
+      - name: /tmp/community-dns-1.2.0.tar.gz 4
+
+      - name: http://www.example.com/redhat-insights-1.0.5.tar.gz 5
+
+      - name: git+https://github.com/ansible-collections/community.general.git 6
+        version: main
+
+    ansible-galaxy collection install -r collections/requirements.yml -p collections
+
+*] By default ansible-galaxy download the collections from ansible galaxy website if you need to make automation hub first
+   update ansible.cfg file by the below
+
+   [galaxy]
+   server_list = automation_hub, galaxy  1
+
+   [galaxy_server.automation_hub]
+   url=https://console.redhat.com/api/automation-hub/  2
+   auth_url=https://sso.redhat.com/auth/realms/redhat-external/protocol/openid-connect/token 3
+   token=eyJh...Jf0o 4
+
+   [galaxy_server.galaxy]
+   url=https://galaxy.ansible.com/

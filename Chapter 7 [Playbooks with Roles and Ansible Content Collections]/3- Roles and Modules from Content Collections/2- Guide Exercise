@@ -1,0 +1,3 @@
+Install Collection => ansible-galaxy collection install gls-utils-0.0.0.1.tar.gz -p collections
+List Collections   => ansible-galaxy collection list -p collections
+List Collections   => ansible-navigator collections

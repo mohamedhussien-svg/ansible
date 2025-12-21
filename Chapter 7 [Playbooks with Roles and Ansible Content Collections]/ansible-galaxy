@@ -1,0 +1,4 @@
+ansible-galaxy role install -r roles/requirements.yml -p roles
+ansible-galaxy role remove student.bash_env -p roles
+ansible-galaxy role list -p roles
+ansible-navigator config dump -m stdout --senv PAGER='grep -i roles'
