@@ -1,0 +1,3 @@
+- src: sss
+  scm: git
+  version: "1.5.1"

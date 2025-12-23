@@ -1,0 +1,50 @@
+*] Select & Retrieve Roles from external resources like:-
+
+    a] git repositories
+    b] ansible galaxy
+
+   and use them in your playbook .
+
+*] You need central managed location to manage and store your roles , so you ensure that your projects use the current version of ansible role
+   and you can have the benefits of the updates and bugfixes .
+
+*] Opensource community uses ansible galaxy:- it is public repository that contain ansible content written by ansible administrators and users .
+
+     You can search in :-
+        website   :- https://galaxy.ansible.com/
+        using CLI :- ansible-galaxy search mysql --platform EL --author xyz --galaxy-tags
+
+*] Use ansible-galaxy CLI to install,list and remove roles from external resources
+   ansible-galaxy looked for the installed roles in:-
+       1] Same directory of your playbook
+       2] Project Roles
+       3] In path that specified using roles_path
+
+*] To use external role in your playbook , you need to make requirements.yml file to add any external role in roles directory
+
+    roles/requirements.yml
+
+  - src: https://github.com/geerlingguy/ansible-role-mysql
+    scm: git
+    version: "1.5.0"
+
+  - src: file:///opt/local/roles/myrole.tar
+    name: myrole
+
+  - src: https://www.example.com/role-archive/someauthor.otherrole.tar
+    name: someauthor.otherrole
+
+*] Use ansible-galaxy role install -r roles/requirements.yml -p roles
+
+    -p roles to install the roles in this directory
+     or you need to update the ansible.cfg file by adding
+
+        [defaults]
+        roles_path = roles
+
+    ansible-galaxy role list
+    ansible-galaxy role remove
+
+
+
+

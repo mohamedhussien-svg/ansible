@@ -1,0 +1,8 @@
+- name: Testing the new role
+  hosts: localhost
+  vars:
+    owner: Mohamed Hussein Hassan Soliman
+  roles:
+    - role: my_new_role
+      system_owner: "{{ owner }}"
+
