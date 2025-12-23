@@ -1,0 +1,27 @@
+1] to check playbook syntax error you can use
+    ansible-navigator run -m stdout playbook.yml --syntax-check
+    run as dry run without make any changes ansible-navigator run -m stdout playbook.yml --check
+
+2] you can use ansible-lint to check issue and flow the best practice
+
+3] Increase Verbosity when running the playbook
+    ansible-navigator run -m stdout playbook.yml -v
+
+4] You can use debug module to check vars, task results
+    register to hold task output
+    assert module
+
+5] you can run the playbook with option --step  so you run task by task as debugging
+    --start-at-task to start the execution of the playbook by this task
+
+6] you can check playbook artifacts it is JSON file that contains information about the playbook and you can fo replay to this artifactes
+
+    in ansible-navigator.yml you can enable or disable the playbook artifacts
+
+    playbook_artifact:
+        enable: true | false
+
+7] you can write the playbook logs in txt file
+
+    in the ansible.cfg
+    log_path: playbook.log
