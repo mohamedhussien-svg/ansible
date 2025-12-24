@@ -1,0 +1,52 @@
+1] Troubleshooting Connection Issue
+
+    You may use wrong remote_user in ansible.cfg file
+    you may not set or establish the ssh keys connection
+
+2] Problem in resolving Host name or address
+
+    you can use host_ansible variable to specify name or address for the managed host in th inventory but this make issue if you add wrong name
+
+    servera.lab.example.com     host_ansible=servera
+
+3] Problem in privilege Escalation
+
+    we use the remote_user to connection to the host
+    and if you need to run a playbook with user that has higher privilege you can you become_user
+    and make user that sudo is configured to use with thi user without password
+    become_user is root be default
+
+4] Problem in python in the managed host
+
+   as ansible used python to run the ansible modules and playbook
+   you need to check that a suitable python interpreter is installed in the  managed hosts
+
+5] Try using check mode --check
+
+    You can run the ansible playbook in check mode that make smoke test for the playbook without making any changes
+
+    ansible-navigator run -m stdout playbook.yml --check --diff
+
+    you can force a task to run in check mode using
+    check_mode: true
+
+6] Testing using test modules
+
+    some modules can give you information about the managed hosts , and this information can be used in debug or test
+
+        1] ansible.builtin.uri
+        2] ansible.builtin.script
+        3] ansible.builtin.command
+        4] ansible.builtin.stat
+        5] ansible.builtin.assert
+
+
+7] Testing using ad hoc command
+
+    is the way to run ansible task quickly and this used for troubleshooting the managed hosts
+    like ping 0r run command
+
+    ansible servera.lab.example.com -m ansible.builtin.ping
+    ansible servera.lab.example.com -m ansible.builtin.command -a 'df'
+    ansible servera.lab.example.com -m ansible.builtin.command -a 'free -m'
+    ansible webservers -u devops -b  -m command -a 'systemctl status httpd
