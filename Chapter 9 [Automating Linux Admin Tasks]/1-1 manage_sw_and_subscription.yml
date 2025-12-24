@@ -1,0 +1,109 @@
+---
+- name: manage software and subscription
+  hosts: localhost
+  become: true
+  remote_user: devops
+  tasks:
+    - name: Install packages
+      dnf:
+        name:
+          - httpd
+          - nginx
+        state: latest
+    - name: Gathering Packages Facts
+      package_facts:
+        manager: auto
+    - name: debug Package facts
+      debug:
+        var: ansible_facts['packages']
+
+    - name: Install Httpd in RHEL version 8
+      when:
+        - "ansible_facts['distribution'] == 'RedHat'"
+        - "ansible_facts['distribution_major_version'] >= '8'"
+      dnf:
+        name: httpd
+        state: present
+
+    - name: Install Httpd in RHEL version 7
+      when:
+        - "ansible_facts['distribution'] == 'RedHat'"
+        - "ansible_facts['distribution_major_version'] < ='7'"
+      yum:
+        name: httpd
+        state: present
+
+    - name: Get RPM 3rd party repository
+      yum_repository:
+        baseurl: http://materials.example.com/yum/repository/
+        name: mui
+        description: mui description
+        state: present
+        file: mui
+        enabled: true
+        gpgcheck: true
+
+---
+
+- name: Register System to Redhat Subscriptions
+  hosts: localhost
+  become: true
+  vars:
+    rhc_state: present
+    rhc_auth:
+      login:
+        username: abc
+        password: xyz
+    rhc_insights:
+      state: present
+    rhc_repositories:
+      - name: rhel-9-for-x86_64-baseos-rpms
+        state: enabled
+      - name: rhel-9-for-x86_64-appstream-rpms
+        state: enabled
+  tasks:
+    - name: Register to Redhat subscriptions
+      include_role:
+        name: redhat.rhel_system_roles.rhc
+
+---
+- name: Repository Configuration
+  hosts: all
+  vars:
+    custom_pkg: simple-agent
+  tasks:
+    - name: Gather Package Facts
+      ansible.builtin.package_facts:
+        manager: auto
+
+    - name: Show Package Facts for the custom package
+      ansible.builtin.debug:
+        var: ansible_facts['packages'][custom_pkg]
+      when: custom_pkg in ansible_facts['packages']
+
+    - name: Ensure Example Repo exists
+      ansible.builtin.yum_repository:
+        name: example-internal
+        description: Example Inc. Internal YUM repo
+        file: example
+        baseurl: http://materials.example.com/yum/repository/
+        gpgcheck: true
+
+    - name: Ensure Repo RPM Key is Installed
+      ansible.builtin.rpm_key:
+        key: http://materials.example.com/yum/repository/RPM-GPG-KEY-example
+        state: present
+
+    - name: Install Example package
+      ansible.builtin.dnf:
+        name: "{{ custom_pkg }}"
+        state: present
+
+    - name: Gather Package Facts
+      ansible.builtin.package_facts:
+        manager: auto
+
+    - name: Show Package Facts for the custom package
+      ansible.builtin.debug:
+        var: ansible_facts['packages'][custom_pkg]
+      when: custom_pkg in ansible_facts['packages']

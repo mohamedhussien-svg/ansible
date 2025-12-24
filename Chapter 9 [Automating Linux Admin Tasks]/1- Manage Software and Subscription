@@ -1,0 +1,46 @@
+1] Manage S/W Packages
+
+    ansible.builtin.dnf:
+    name:
+        - httpd
+        - nginx
+
+2] Gathering Facts about the installed packages
+
+    ansible.builtin.package_facts
+
+    it collects information about the installed packages and add it in variable ansible_facts['packages']
+
+3] You can use another packages based on the OS like
+
+    apt
+    win_pkg
+    yum
+    or package if you need to install based on the package module that available in the OS
+
+4] Register system in Redhat Enterprise Linux Subscription
+
+    using redhat.rhel_system_roles.rhc role
+
+5]  Manage modules using RPM
+     using yum_repository
+     When the gpgcheck keyword is set to true in the ansible.builtin.yum_repository module, you also need to install the GPG key on the managed host. The
+     as it will check that rpm is signed by GPG
+
+    - name: Configure the company YUM/DNF repositories
+      hosts: servera.lab.example.com
+      tasks:
+        - name: Deploy the GPG public key
+          ansible.builtin.rpm_key:
+            key: http://materials.example.com/yum/repository/RPM-GPG-KEY-example
+            state: present
+
+        - name: Ensure Example Repo exists
+          ansible.builtin.yum_repository:
+            file: example
+            name: example-internal
+            description: Example Inc. Internal YUM/DNF repo
+            baseurl: http://materials.example.com/yum/repository/
+            enabled: true
+            gpgcheck: true
+            state: present
