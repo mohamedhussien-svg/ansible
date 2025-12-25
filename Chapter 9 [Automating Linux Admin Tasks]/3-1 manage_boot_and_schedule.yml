@@ -1,0 +1,75 @@
+---
+- name: Manage Boot and Schedule
+  hosts: all
+  become: true
+  tasks:
+    - name: Schedule Job that Runs Once
+      at:
+        command: userdel -r tempuser
+        units: minutes
+        count: 20
+        unique: true
+        state: present
+    - name: Schedule Repeated Jobs
+      cron:
+        name: Test
+        user: testing
+        job: /home/usr/backup
+        minute: 5
+        hour: 5
+        weekday: 5
+
+    - name: Configure Cron
+      cron:
+        name: my_cron
+        job: date >> /home/devops/my_date_time_cron_job
+        minute: 2
+        hour: 3
+        weekday: 1-5
+        user: devops
+        state: present
+        cron_file: date_cron
+
+    - name: Remove Cron
+      cron:
+        minute: 2
+        hour: 3
+        weekday: 1-5
+        user: devops
+        state: absent
+        cron_file: date_cron
+
+    - name: Add Data to date file in home
+      at:
+        count: 1
+        units: minutes
+        state: present
+        unique: true
+        command: date >> ~/home/date-file
+
+
+---
+- name: change default boot target
+  hosts: webservers
+  become: true
+  vars:
+    default_target: "graphical.target"
+  tasks:
+    - name: Get Default target
+      command:
+        cmd: "systemctl get-default"
+      register: default
+      changed_when: false
+
+    - name: set default_target
+      when: default_target not in {{ default.stdout }}
+      command:
+        cmd: "systemctl set-default {{ default_target }}"
+
+    - name: Reboot Host
+      reboot:
+
+
+
+
+

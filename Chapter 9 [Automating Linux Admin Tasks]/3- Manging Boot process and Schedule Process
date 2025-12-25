@@ -1,0 +1,10 @@
+1] Schedule Job that will Run in the Future
+
+    a] Job that runs once [ansible.posix.at]
+    b] Repeated Jobs [ansible.builtin.cron]
+
+2] Boot Process
+    a] ansible.builtin.service
+    b] ansible.builtin.systemd
+        daemon-reload
+    c] ansible.builtin.reboot
