@@ -1,0 +1,59 @@
+*] You need to configure
+
+    Users
+    Groups
+    Configure SSH [Generate user SSH keys , Manage the known_hosts, Manage the authorized_key]
+    Modify Sudo Configuration in the Host
+
+1] Manage Users [ansible.builtin.user]
+
+    the module [ansible.builtin.user] is responsible for configure Linux Users
+    so you can create, modify or remove users in managed hosts
+
+    you can assign user to group , modify
+        user shell
+        user home dir
+        user groups
+        user password
+
+    also you can use this module configure user ssh
+
+2] Manage Groups [ansible.builtin.Groups]
+
+    you can manage linux group using this module to do :
+        Create
+        Remove
+        Modify
+    Groups
+
+3] Manage The Known Hosts Files [ansible.builtin.known_hosts]
+
+    so you can manage ssh host key in the managed host by adding or remove them from the known_hosts file
+    so you will not need to specify the password to making ssh connection
+
+    key: is the public key of the server
+
+4] The Authorized Key Module
+    The ansible.posix.authorized_key module manages SSH authorized keys for user accounts on managed hosts.
+
+    The following example demonstrates how to use the ansible.posix.authorized_key module to add an SSH key to a managed host:
+
+    - name: Set authorized key
+      ansible.posix.authorized_key:
+        user: user1 1
+        state: present 2
+        key: "{{ lookup('ansible.builtin.file', 'files/user1/id_rsa.pub') }}" 3
+
+5] Configuring Sudo Access for Users and Groups
+    In Red Hat Enterprise Linux 9, you can configure access for a user or group to run sudo commands without requiring a password prompt.
+
+    The following example demonstrates how to use the ansible.builtin.lineinfile module to provide a group with sudo access to the root account without prompting the group members for a password:
+
+    - name: Modify sudo to allow the group01 group sudo without a password
+      ansible.builtin.lineinfile:
+        path: /etc/sudoers.d/group01
+        state: present
+        create: true
+        mode: 0440
+        line: "%group01 ALL=(ALL) NOPASSWD: ALL" 5
+        validate: /usr/sbin/visudo -cf %s

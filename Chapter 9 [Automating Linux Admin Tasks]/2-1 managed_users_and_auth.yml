@@ -1,0 +1,61 @@
+- name: Manage Users and Authentications
+  hosts: localhost
+  become: true
+  vars:
+    my_username: mohamed
+    my_password: redhat
+  tasks:
+
+#   ------------------------Manage Users-----------------------
+
+    - name: Manage users and Create user SSH Keys
+      user:
+        name: "{{ my_username }}"
+        password: "{{ my_password | password_hash('sha512') }}"
+        groups: group1,group2
+        state: present
+        append: true # Append the Groups with the new user
+        shell: /bin/shell
+        home: /user/mohamed/home
+#       ----------------------------------------------------
+        # group: to assign to one group
+        # comment: to add description
+        # create_home: true|false
+        # uid: set user UID
+        # update_password: on_create
+#       ----------------------------------------------------
+        generate_ssh_key: true
+        ssh_key_bits: 2048
+        ssh_key_file: .ssh/id_my_rsa
+
+#   ------------------------Manage Groups-----------------------
+    - name: Manage Groups
+      group:
+        name: developers
+        state: present
+        #gid:
+#   ------------------------Known Hosts-------------------------
+    - name: Manage The SSH Known Hosts
+      known_hosts:
+        name: servera
+        path: ~/.ssh/known_hosts
+        state: present
+        key:
+
+    - name: configure group sudo
+      lineinfile:
+        path: /etc/sudoers.d/group1
+        state: present
+        create: true
+        line: "%group01 ALL=(ALL) NOPASSWD: ALL%"
+        mode: 0444
+
+
+
+
+
+
+
+
+
+
